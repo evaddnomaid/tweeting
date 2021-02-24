@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/tweeting}
-    username: ${JDBC_DATABASE_USERNAME:postgres}
-    password: ${JDBC_DATABASE_PASSWORD:<<YOUR_PASSWORD>>}
+    url: ${JDBC_DATABASE_URL:jdbc:h2:mem:tweeting}
+    username: ${JDBC_DATABASE_USERNAME:sa}
+    password: ${JDBC_DATABASE_PASSWORD:}
   dbcp2:
     max-wait-millis: 30000
     validation-query: "SELECT 1"

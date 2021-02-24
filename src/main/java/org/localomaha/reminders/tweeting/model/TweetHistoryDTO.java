@@ -13,6 +13,8 @@ public class TweetHistoryDTO {
 
     private LocalDateTime whenSent;
 
+    private Long tweetToHistory;
+
     public Long getId() {
         return id;
     }
@@ -35,6 +37,14 @@ public class TweetHistoryDTO {
 
     public void setWhenSent(final LocalDateTime whenSent) {
         this.whenSent = whenSent;
+    }
+
+    public Long getTweetToHistory() {
+        return tweetToHistory;
+    }
+
+    public void setTweetToHistory(final Long tweetToHistory) {
+        this.tweetToHistory = tweetToHistory;
     }
 
 }
