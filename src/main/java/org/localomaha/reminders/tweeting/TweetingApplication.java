@@ -40,6 +40,10 @@ public class TweetingApplication implements CommandLineRunner {
         tweet1.setId(id);
         TweetHistoryDTO tweetSent = makeSentTweet(tweet1);
         tweetHistoryService.create(tweetSent);
+        for (int i=0; i < 5; i++) {
+            tweetSent = makeSentTweet(tweet1);
+            tweetHistoryService.create(tweetSent);
+        }
     }
 
     private TweetHistoryDTO makeSentTweet(TweetsDTO tweet1) {
