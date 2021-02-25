@@ -12,6 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.task.TaskSchedulerBuilder;
 import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.scheduling.support.PeriodicTrigger;
 
 import java.time.LocalDateTime;
@@ -51,7 +52,11 @@ public class TweetingApplication implements CommandLineRunner, Runnable {
             tweetSent = makeSentTweet(tweet1);
             tweetHistoryService.create(tweetSent);
         }
+        // Every two seconds execute the run method of this class...
         taskScheduler.schedule(this, new PeriodicTrigger(2, TimeUnit.SECONDS));
+
+        // TODO: Get references to how to decode (and build) cron trigger expressions
+        taskScheduler.schedule(this, new CronTrigger("10 * * * * ?"));
     }
 
     public static TweetHistoryDTO makeSentTweet(TweetsDTO tweet1) {

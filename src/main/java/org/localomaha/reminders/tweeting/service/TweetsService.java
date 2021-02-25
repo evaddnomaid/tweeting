@@ -36,19 +36,6 @@ public class TweetsService {
         this.userRepository = userRepository;
     }
 
-    // @Scheduled(cron = "0 0/1 * * * *")
-//    @Scheduled(cron = "*/1 * * * *")
-//    public void repeater() {
-//        System.out.println("repeater! " + new java.util.Date());
-//
-//        UserDTO dave = userService.get(10_000L);
-//        TweetsDTO tweet1 = TweetingApplication.makeTweetSchedule("Hello world!","TODO: Crontab", dave);
-//        Long id = create(tweet1);
-//        tweet1.setId(id);
-//        TweetHistoryDTO tweetSent = TweetingApplication.makeSentTweet(tweet1);
-//        tweetHistoryService.create(tweetSent);
-//    }
-
     public List<TweetsDTO> findAll() {
         return tweetsRepository.findAll()
                 .stream()
