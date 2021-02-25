@@ -10,12 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.task.TaskSchedulerBuilder;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.support.PeriodicTrigger;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 
 
 @SpringBootApplication
-public class TweetingApplication implements CommandLineRunner {
+public class TweetingApplication implements CommandLineRunner, Runnable {
 
     @Autowired
     UserService userService;
@@ -25,6 +29,9 @@ public class TweetingApplication implements CommandLineRunner {
 
     @Autowired
     TweetHistoryService tweetHistoryService;
+
+    @Autowired
+    private TaskScheduler taskScheduler;
 
     public static void main(String[] args) {
         SpringApplication.run(TweetingApplication.class, args);
@@ -44,9 +51,10 @@ public class TweetingApplication implements CommandLineRunner {
             tweetSent = makeSentTweet(tweet1);
             tweetHistoryService.create(tweetSent);
         }
+        taskScheduler.schedule(this, new PeriodicTrigger(2, TimeUnit.SECONDS));
     }
 
-    private TweetHistoryDTO makeSentTweet(TweetsDTO tweet1) {
+    public static TweetHistoryDTO makeSentTweet(TweetsDTO tweet1) {
         TweetHistoryDTO tweetSent=new TweetHistoryDTO();
         tweetSent.setMessage(tweet1.getMessage());
         tweetSent.setTweetToHistory(tweet1.getId());
@@ -55,7 +63,7 @@ public class TweetingApplication implements CommandLineRunner {
         return tweetSent;
     }
 
-    private TweetsDTO makeTweetSchedule(String message, String crontab, UserDTO dave) {
+    public static TweetsDTO makeTweetSchedule(String message, String crontab, UserDTO dave) {
         TweetsDTO t = new TweetsDTO();
         t.setMessage(message);
         t.setCrontab(crontab);
@@ -69,5 +77,10 @@ public class TweetingApplication implements CommandLineRunner {
         u.setName(name);
         u.setEmail(email);
         return u;
+    }
+
+    @Override
+    public void run() {
+        System.out.println("run! " + new java.util.Date());
     }
 }

@@ -2,12 +2,18 @@ package org.localomaha.reminders.tweeting.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.localomaha.reminders.tweeting.TweetingApplication;
 import org.localomaha.reminders.tweeting.domain.Tweets;
 import org.localomaha.reminders.tweeting.domain.User;
+import org.localomaha.reminders.tweeting.model.TweetHistoryDTO;
 import org.localomaha.reminders.tweeting.model.TweetsDTO;
+import org.localomaha.reminders.tweeting.model.UserDTO;
 import org.localomaha.reminders.tweeting.repos.TweetsRepository;
 import org.localomaha.reminders.tweeting.repos.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,11 +24,30 @@ public class TweetsService {
     private final TweetsRepository tweetsRepository;
     private final UserRepository userRepository;
 
+    @Autowired
+    private TweetHistoryService tweetHistoryService;
+
+    @Autowired
+    private UserService userService;
+
     public TweetsService(final TweetsRepository tweetsRepository,
             final UserRepository userRepository) {
         this.tweetsRepository = tweetsRepository;
         this.userRepository = userRepository;
     }
+
+    // @Scheduled(cron = "0 0/1 * * * *")
+//    @Scheduled(cron = "*/1 * * * *")
+//    public void repeater() {
+//        System.out.println("repeater! " + new java.util.Date());
+//
+//        UserDTO dave = userService.get(10_000L);
+//        TweetsDTO tweet1 = TweetingApplication.makeTweetSchedule("Hello world!","TODO: Crontab", dave);
+//        Long id = create(tweet1);
+//        tweet1.setId(id);
+//        TweetHistoryDTO tweetSent = TweetingApplication.makeSentTweet(tweet1);
+//        tweetHistoryService.create(tweetSent);
+//    }
 
     public List<TweetsDTO> findAll() {
         return tweetsRepository.findAll()
