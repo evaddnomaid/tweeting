@@ -36,6 +36,9 @@ public class Tweets {
     @Column
     private String crontab;
 
+    @Column
+    private Long numberToSend;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_tweets_id")
     private User userTweets;
@@ -65,6 +68,14 @@ public class Tweets {
 
     public void setCrontab(final String crontab) {
         this.crontab = crontab;
+    }
+
+    public Long getNumberToSend() {
+        return numberToSend;
+    }
+
+    public void setNumberToSend(Long numberToSend) {
+        this.numberToSend = numberToSend;
     }
 
     public User getUserTweets() {

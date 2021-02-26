@@ -1,4 +1,4 @@
-CREATE SEQUENCE primary_sequence START WITH 10000 INCREMENT BY 1;
+CREATE SEQUENCE primary_sequence START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE user (
     id BIGINT NOT NULL,
@@ -12,6 +12,7 @@ CREATE TABLE tweets (
     id BIGINT NOT NULL,
     message VARCHAR(255),
     crontab VARCHAR(255),
+    number_to_send BIGINT,
     user_tweets_id BIGINT,
     CONSTRAINT PK_TWEETS PRIMARY KEY (id)
 );

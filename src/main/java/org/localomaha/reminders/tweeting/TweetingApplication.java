@@ -45,7 +45,7 @@ public class TweetingApplication implements CommandLineRunner {
         UserDTO dave = makeUser("evaddnomaid","Dave Burchell","dave@dave.com");
         Long id = userService.create(dave);
         dave.setId(id);
-        TweetsDTO tweet1 = makeTweetSchedule("Hello world!","TODO: Crontab", dave);
+        TweetsDTO tweet1 = makeTweetSchedule("Hello world!","TODO: Crontab", dave, 2L);
         id = tweetsService.create(tweet1);
         tweet1.setId(id);
         TweetHistoryDTO tweetSent = makeSentTweet(tweet1);
@@ -77,10 +77,15 @@ public class TweetingApplication implements CommandLineRunner {
     }
 
     public static TweetsDTO makeTweetSchedule(String message, String crontab, UserDTO dave) {
+       return makeTweetSchedule(message, crontab, dave, 1L);
+    }
+
+    public static TweetsDTO makeTweetSchedule(String message, String crontab, UserDTO dave, Long numberToSend) {
         TweetsDTO t = new TweetsDTO();
         t.setMessage(message);
         t.setCrontab(crontab);
         t.setUserTweets(dave.getId());
+        t.setNumberToSend(numberToSend);
         return t;
     }
 

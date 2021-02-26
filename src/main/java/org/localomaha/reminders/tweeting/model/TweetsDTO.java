@@ -13,6 +13,8 @@ public class TweetsDTO {
     @Size(max = 255)
     private String crontab;
 
+    private Long numberToSend;
+
     private Long userTweets;
 
     public Long getId() {
@@ -37,6 +39,14 @@ public class TweetsDTO {
 
     public void setCrontab(final String crontab) {
         this.crontab = crontab;
+    }
+
+    public Long getNumberToSend() {
+        return numberToSend;
+    }
+
+    public void setNumberToSend(Long numberToSend) {
+        this.numberToSend = numberToSend;
     }
 
     public Long getUserTweets() {
