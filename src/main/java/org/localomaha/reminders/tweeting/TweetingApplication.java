@@ -53,7 +53,7 @@ public class TweetingApplication implements CommandLineRunner, Runnable {
             tweetHistoryService.create(tweetSent);
         }
         // Every two seconds execute the run method of this class...
-        taskScheduler.schedule(this, new PeriodicTrigger(2, TimeUnit.SECONDS));
+        taskScheduler.schedule(this, new PeriodicTrigger(2, TimeUnit.MINUTES));
 
         // TODO: Get references to how to decode (and build) cron trigger expressions
         taskScheduler.schedule(this, new CronTrigger("10 * * * * ?"));
