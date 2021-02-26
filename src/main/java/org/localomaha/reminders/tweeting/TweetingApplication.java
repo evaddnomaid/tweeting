@@ -4,6 +4,7 @@ import org.localomaha.reminders.tweeting.model.TweetHistoryDTO;
 import org.localomaha.reminders.tweeting.model.TweetsDTO;
 import org.localomaha.reminders.tweeting.model.UserDTO;
 import org.localomaha.reminders.tweeting.service.TweetHistoryService;
+import org.localomaha.reminders.tweeting.service.TweetRunnable;
 import org.localomaha.reminders.tweeting.service.TweetsService;
 import org.localomaha.reminders.tweeting.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 
 @SpringBootApplication
-public class TweetingApplication implements CommandLineRunner, Runnable {
+public class TweetingApplication implements CommandLineRunner {
 
     @Autowired
     UserService userService;
@@ -53,10 +54,11 @@ public class TweetingApplication implements CommandLineRunner, Runnable {
             tweetHistoryService.create(tweetSent);
         }
         // Every two seconds execute the run method of this class...
-        taskScheduler.schedule(this, new PeriodicTrigger(2, TimeUnit.MINUTES));
+        TweetRunnable tweetRunnable = new TweetRunnable("this is the message");
+        taskScheduler.schedule(tweetRunnable, new PeriodicTrigger(2, TimeUnit.MINUTES));
 
         // TODO: Get references to how to decode (and build) cron trigger expressions
-        taskScheduler.schedule(this, new CronTrigger("10 * * * * ?"));
+        taskScheduler.schedule(tweetRunnable, new CronTrigger("10 * * * * ?"));
     }
 
     public static TweetHistoryDTO makeSentTweet(TweetsDTO tweet1) {
@@ -84,8 +86,4 @@ public class TweetingApplication implements CommandLineRunner, Runnable {
         return u;
     }
 
-    @Override
-    public void run() {
-        System.out.println("run! " + new java.util.Date());
-    }
 }
