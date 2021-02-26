@@ -17,6 +17,7 @@ import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.scheduling.support.PeriodicTrigger;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 
@@ -53,12 +54,17 @@ public class TweetingApplication implements CommandLineRunner {
             tweetSent = makeSentTweet(tweet1);
             tweetHistoryService.create(tweetSent);
         }
+        // TODO: Just read the database and schedule each
         // Every two seconds execute the run method of this class...
-        TweetRunnable tweetRunnable = new TweetRunnable("this is the message");
-        taskScheduler.schedule(tweetRunnable, new PeriodicTrigger(2, TimeUnit.MINUTES));
+        TweetRunnable tweetRunnable = new TweetRunnable("this is the message every 50 seconds");
+        tweetRunnable.setNumberTimes(3);
+        // taskScheduler.schedule(tweetRunnable, new PeriodicTrigger(2, TimeUnit.MINUTES));
 
         // TODO: Get references to how to decode (and build) cron trigger expressions
-        taskScheduler.schedule(tweetRunnable, new CronTrigger("10 * * * * ?"));
+        // https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/scheduling/support/CronSequenceGenerator.html
+        // "*/50 * * * * *" = every 50 seconds.
+        ScheduledFuture<?> future = taskScheduler.schedule(tweetRunnable, new CronTrigger("*/50 * * * * *"));
+        tweetRunnable.setFuture(future);
     }
 
     public static TweetHistoryDTO makeSentTweet(TweetsDTO tweet1) {
