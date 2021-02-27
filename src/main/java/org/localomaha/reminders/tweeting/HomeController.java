@@ -22,15 +22,20 @@ public class HomeController {
 
     @GetMapping("/add")
     public String addGet(Model model) {
+        TweetsDTO tweet = new TweetsDTO();
+        model.addAttribute("tweet",tweet);
+        setCurrentDate(model);
         return "add";
     }
 
+    /*
     @PostMapping("/add")
     public String addPost(Model model, TweetsDTO tweet, BindingResult bindingResult) {
         setCurrentDate(model);
         model.addAttribute("tweet",tweet);
         return "add";
     }
+    */
 
     private void setCurrentDate(Model model) {
         String currentDate = (new Date()).toString();

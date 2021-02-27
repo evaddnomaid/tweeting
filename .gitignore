@@ -35,3 +35,4 @@ out/
 /dist/
 /nbdist/
 /.nb-gradle/
+*.swp

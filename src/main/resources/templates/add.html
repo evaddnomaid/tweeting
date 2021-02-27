@@ -4,10 +4,10 @@
 This is add.html <span th:text="${currentDate}"></span>
 <p>
     <form method="post" th:action="@{/add}" th:object="${tweet}">
-    <label for="message">URL:</label><input name="message" type="text" th:field="*{message}"/>
     <label for="crontab">TAGS:</label><input name="crontab" type="text" th:field="*{crontab}"/>
+    <label for="message">URL:</label><input name="message" type="text" th:field="*{message}"/>
     <input type="submit">
-</form>
+    </form>
 </p>
 <!--
 <div th:insert="fragments :: footer">FOOTER STUFF</div>
