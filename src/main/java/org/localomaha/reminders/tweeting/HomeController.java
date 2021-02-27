@@ -28,14 +28,13 @@ public class HomeController {
         return "add";
     }
 
-    /*
     @PostMapping("/add")
     public String addPost(Model model, TweetsDTO tweet, BindingResult bindingResult) {
+        System.out.println(tweet);
         setCurrentDate(model);
         model.addAttribute("tweet",tweet);
         return "add";
     }
-    */
 
     private void setCurrentDate(Model model) {
         String currentDate = (new Date()).toString();
