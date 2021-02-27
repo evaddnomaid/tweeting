@@ -3,10 +3,12 @@ package org.localomaha.reminders.tweeting;
 import org.localomaha.reminders.tweeting.model.TweetsDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.Valid;
 import java.util.Date;
 
 
@@ -24,7 +26,7 @@ public class HomeController {
     }
 
     @PostMapping("/add")
-    public String addPost(Model model, TweetsDTO tweet) {
+    public String addPost(Model model, TweetsDTO tweet, BindingResult bindingResult) {
         setCurrentDate(model);
         model.addAttribute("tweet",tweet);
         return "add";
