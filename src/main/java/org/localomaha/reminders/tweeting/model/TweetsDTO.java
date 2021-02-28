@@ -57,4 +57,14 @@ public class TweetsDTO {
         this.userTweets = userTweets;
     }
 
+    @Override
+    public String toString() {
+        return "TweetsDTO{" +
+                "id=" + id +
+                ", message='" + message + '\'' +
+                ", crontab='" + crontab + '\'' +
+                ", numberToSend=" + numberToSend +
+                ", userTweets=" + userTweets +
+                '}';
+    }
 }
