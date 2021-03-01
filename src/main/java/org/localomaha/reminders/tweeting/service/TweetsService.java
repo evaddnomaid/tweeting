@@ -16,6 +16,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
 
 
 @Service
@@ -34,6 +38,11 @@ public class TweetsService {
             final UserRepository userRepository) {
         this.tweetsRepository = tweetsRepository;
         this.userRepository = userRepository;
+    }
+
+    private void postTweet(String latestStatus) throws TwitterException {
+        Twitter twitter = TwitterFactory.getSingleton();
+        Status status = twitter.updateStatus(latestStatus);
     }
 
     public List<TweetsDTO> findAll() {

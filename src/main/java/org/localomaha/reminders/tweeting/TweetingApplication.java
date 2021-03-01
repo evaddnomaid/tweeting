@@ -1,5 +1,7 @@
 package org.localomaha.reminders.tweeting;
 
+import lombok.extern.log4j.Log4j2;
+import org.localomaha.reminders.tweeting.config.TwitterConfig;
 import org.localomaha.reminders.tweeting.model.TweetHistoryDTO;
 import org.localomaha.reminders.tweeting.model.TweetsDTO;
 import org.localomaha.reminders.tweeting.model.UserDTO;
@@ -12,15 +14,26 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.task.TaskSchedulerBuilder;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.scheduling.support.PeriodicTrigger;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Properties;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 
+@Log4j2
 @SpringBootApplication
 public class TweetingApplication implements CommandLineRunner {
 
@@ -42,6 +55,7 @@ public class TweetingApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        twitterSetup();
         UserDTO dave = makeUser("evaddnomaid","Dave Burchell","dave@dave.com");
         Long id = userService.create(dave);
         dave.setId(id);
@@ -65,6 +79,27 @@ public class TweetingApplication implements CommandLineRunner {
         // "*/50 * * * * *" = every 50 seconds.
         ScheduledFuture<?> future = taskScheduler.schedule(tweetRunnable, new CronTrigger("*/50 * * * * *"));
         tweetRunnable.setFuture(future);
+    }
+
+    private void twitterSetup() throws IOException, TwitterException {
+        // TODO: Use more spring things
+        Properties properties=new Properties();
+        properties.load(new FileReader("src/main/resources/twitter.properties"));
+        System.out.println(properties);
+        String consumerKey = properties.getProperty("consumerKey");
+        String consumerSecret = properties.getProperty("consumerSecret");
+        String accessToken = properties.getProperty("accessToken");
+        String accessTokenSecret = properties.getProperty("accessTokenSecret");
+        ConfigurationBuilder cb = new ConfigurationBuilder();
+        cb.setDebugEnabled(true)
+                .setOAuthConsumerKey(consumerKey)
+                .setOAuthConsumerSecret(consumerSecret)
+                .setOAuthAccessToken(accessToken)
+                .setOAuthAccessTokenSecret(accessTokenSecret);
+        TwitterFactory tf = new TwitterFactory(cb.build());
+        Twitter twitter = tf.getInstance();
+        Status status = twitter.updateStatus("Hello twitter4j! for second time :-)");
+        log.info("status={}", status);
     }
 
     public static TweetHistoryDTO makeSentTweet(TweetsDTO tweet1) {

@@ -36,3 +36,5 @@ out/
 /nbdist/
 /.nb-gradle/
 *.swp
+twitter-keys.properties
+twitter.properties
