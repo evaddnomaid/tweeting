@@ -1,7 +1,6 @@
 package org.localomaha.reminders.tweeting;
 
 import lombok.extern.log4j.Log4j2;
-import org.localomaha.reminders.tweeting.config.TwitterConfig;
 import org.localomaha.reminders.tweeting.model.TweetHistoryDTO;
 import org.localomaha.reminders.tweeting.model.TweetsDTO;
 import org.localomaha.reminders.tweeting.model.UserDTO;
