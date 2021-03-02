@@ -54,7 +54,11 @@ public class TweetingApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        twitterSetup();
+        try {
+            twitterSetup();
+        } catch (Exception bland) {
+            log.error("Could not setup twitter!", bland);
+        }
         UserDTO dave = makeUser("evaddnomaid","Dave Burchell","dave@dave.com");
         Long id = userService.create(dave);
         dave.setId(id);
@@ -97,8 +101,8 @@ public class TweetingApplication implements CommandLineRunner {
                 .setOAuthAccessTokenSecret(accessTokenSecret);
         TwitterFactory tf = new TwitterFactory(cb.build());
         Twitter twitter = tf.getInstance();
-        Status status = twitter.updateStatus("Hello twitter4j! for second time :-)");
-        log.info("status={}", status);
+        // Status status = twitter.updateStatus("Hello twitter4j! for second time :-)");
+        // log.info("status={}", status);
     }
 
     public static TweetHistoryDTO makeSentTweet(TweetsDTO tweet1) {
